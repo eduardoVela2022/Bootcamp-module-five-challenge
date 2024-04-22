@@ -119,32 +119,43 @@ function render(cardArray, cardLane) {
     const newCard = $("<div>").draggable({ opacity: 0.7, helper: "clone" });
     // It is given the id of the card
     newCard.attr("id", card.id);
+    newCard.attr("class", "card");
     // It is given a z index, so that it is not covered by other elements
     newCard.css("z-index", "1");
-    newCard.css("background-color", "red");
+
+    // Card's body
+    const newCardBody = $("<div>");
+    newCardBody.attr("class", "card-body");
 
     // Card's title element is created
-    const newCardTitle = $("<h3>");
+    const newCardTitle = $("<div>");
+    newCardTitle.attr("class", "card-header fs-4");
     newCardTitle.text(card.title);
-
-    // Card's due date element is created
-    const newCardDueDate = $("<p>");
-    newCardDueDate.text(card.dueDate);
 
     // Card's description element is created
     const newCardDescription = $("<p>");
+    newCardDescription.attr("class", "card-text");
     newCardDescription.text(card.description);
+
+    // Card's due date element is created
+    const newCardDueDate = $("<p>");
+    newCardDueDate.attr("class", "card-text");
+    newCardDueDate.text(card.dueDate);
 
     // Card's delete button
     const newDeleteButton = $("<button>");
+    newDeleteButton.attr("class", "btn btn-danger");
     newDeleteButton.text("Delete");
     newDeleteButton.on("click", () => handleDelete(card.id));
 
-    // Card's elements are appened to it
+    // Card's elements are appended to the card body
+    newCardBody.append(newCardDescription);
+    newCardBody.append(newCardDueDate);
+    newCardBody.append(newDeleteButton);
+
+    // Card's header and body are appended to the card element
     newCard.append(newCardTitle);
-    newCard.append(newCardDueDate);
-    newCard.append(newCardDescription);
-    newCard.append(newDeleteButton);
+    newCard.append(newCardBody);
 
     // Card is appended to the given card lane
     cardLane.append(newCard);
