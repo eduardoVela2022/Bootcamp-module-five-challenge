@@ -1,5 +1,6 @@
 // UI elements
-const addTaskButton = $("#add-task-button");
+const createTaskButton = $("#create-task-button");
+const taskForm = $("#task-form");
 // Form fields
 const newTaskTitle = $("#task-title");
 const newTaskDueDate = $("#task-due-date");
@@ -16,28 +17,7 @@ const doneCardsLaneBox = $("#done-cards-box");
 // Retrieve tasks and nextId from localStorage
 let taskList = [];
 
-// Modal form
-modal = $("#task-form").dialog({
-  autoOpen: false,
-  height: 400,
-  width: 350,
-  modal: true,
-  buttons: {
-    "Create task": createTask,
-    Cancel: function () {
-      // Modal form fields are reset
-      resetForm();
-      //  Modal form window is closed
-      modal.dialog("close");
-    },
-  },
-  close: function () {
-    // Modal form fields are reset
-    resetForm();
-  },
-});
-
-function createTask() {
+function handleCreate() {
   // New task is created
   const newTask = {
     id: crypto.randomUUID(),
@@ -63,7 +43,7 @@ function createTask() {
   resetForm();
 
   //  Modal form window is closed
-  modal.dialog("close");
+  taskForm.modal("hide");
 }
 
 function resetForm() {
@@ -84,6 +64,7 @@ function loadTasks() {
 }
 
 function saveTasks() {
+  // Saves the task list array to local storage
   localStorage.setItem("tasks", JSON.stringify(taskList));
 }
 
@@ -119,43 +100,47 @@ function render(cardArray, cardLane) {
     const newCard = $("<div>").draggable({ opacity: 0.7, helper: "clone" });
     // It is given the id of the card
     newCard.attr("id", card.id);
+    newCard.attr("class", "card");
     // It is given a z index, so that it is not covered by other elements
     newCard.css("z-index", "1");
-    newCard.css("background-color", "red");
+
+    // Card's body
+    const newCardBody = $("<div>");
+    newCardBody.attr("class", "card-body");
 
     // Card's title element is created
-    const newCardTitle = $("<h3>");
+    const newCardTitle = $("<div>");
+    newCardTitle.attr("class", "card-header fs-4");
     newCardTitle.text(card.title);
-
-    // Card's due date element is created
-    const newCardDueDate = $("<p>");
-    newCardDueDate.text(card.dueDate);
 
     // Card's description element is created
     const newCardDescription = $("<p>");
+    newCardDescription.attr("class", "card-text");
     newCardDescription.text(card.description);
+
+    // Card's due date element is created
+    const newCardDueDate = $("<p>");
+    newCardDueDate.attr("class", "card-text");
+    newCardDueDate.text(card.dueDate);
 
     // Card's delete button
     const newDeleteButton = $("<button>");
+    newDeleteButton.attr("class", "btn btn-danger");
     newDeleteButton.text("Delete");
     newDeleteButton.on("click", () => handleDelete(card.id));
 
-    // Card's elements are appened to it
+    // Card's elements are appended to the card body
+    newCardBody.append(newCardDescription);
+    newCardBody.append(newCardDueDate);
+    newCardBody.append(newDeleteButton);
+
+    // Card's header and body are appended to the card element
     newCard.append(newCardTitle);
-    newCard.append(newCardDueDate);
-    newCard.append(newCardDescription);
-    newCard.append(newDeleteButton);
+    newCard.append(newCardBody);
 
     // Card is appended to the given card lane
     cardLane.append(newCard);
   }
-}
-
-function handleAddTask(event) {
-  event.preventDefault();
-
-  // Modal form window is opened
-  modal.dialog("open");
 }
 
 function handleDelete(id) {
@@ -202,6 +187,8 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+  createTaskButton.on("click", handleCreate);
+
   // Card lane containers are made droppable
   toDoCardsLaneBox.droppable({
     drop: handleDrop,
@@ -218,5 +205,4 @@ $(document).ready(function () {
 
   // Card lanes are rendered
   renderCardLanes();
-  addTaskButton.on("click", handleAddTask);
 });

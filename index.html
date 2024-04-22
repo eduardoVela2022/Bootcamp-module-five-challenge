@@ -51,28 +51,88 @@
           id="add-task-button"
           class="btn btn-success"
           data-bs-toggle="modal"
-          data-bs-target="#formModal"
+          data-bs-target="#task-form"
         >
           Add Task
         </button>
       </div>
 
       <!-- Modal Task Form -->
-      <div id="task-form" title="Create new task">
-        <form>
-          <label for="task-title">Title:</label>
-          <input type="text" name="task-title" id="task-title" />
-          <label for="task-due-date">Due date:</label>
-          <input type="text" name="task-due-date" id="task-due-date" />
-          <label for="task-description">Description:</label>
-          <input type="text" name="task-description" id="task-description" />
-
-          <input
-            type="submit"
-            tabindex="-1"
-            style="position: absolute; top: -1000px"
-          />
-        </form>
+      <div
+        id="task-form"
+        class="modal fade"
+        tabindex="-1"
+        aria-labelledby="task-form-title"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <!-- Title -->
+              <h1 id="task-form-title" class="modal-title fs-5">
+                Create a new task
+              </h1>
+              <!-- Cancel Button -->
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+              <!-- Form -->
+              <form>
+                <!-- Title -->
+                <label for="task-title" class="form-label">Title:</label>
+                <input
+                  type="text"
+                  name="task-title"
+                  id="task-title"
+                  class="form-control mb-3"
+                />
+                <!-- Due Date -->
+                <label for="task-due-date" class="form-label">Due date:</label>
+                <input
+                  type="text"
+                  name="task-due-date"
+                  id="task-due-date"
+                  class="form-control mb-3"
+                />
+                <!-- Description -->
+                <label for="task-description" class="form-label"
+                  >Description:</label
+                >
+                <textarea
+                  name="task-description"
+                  id="task-description"
+                  class="form-control"
+                ></textarea>
+              </form>
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+              <!-- Cancel Button -->
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <!-- Create Button -->
+              <button
+                id="create-task-button"
+                type="button"
+                class="btn btn-primary"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="row swim-lanes text-center justify-content-between">
@@ -85,7 +145,7 @@
             </div>
             <!-- Lane Cards -->
             <div id="todo-cards-box" class="card-body bg-light">
-              <div id="todo-cards"></div>
+              <div id="todo-cards" class="task-card-lane-gap"></div>
             </div>
           </div>
         </div>
@@ -99,7 +159,7 @@
             </div>
             <!-- Lane Cards -->
             <div id="in-progress-cards-box" class="card-body bg-light">
-              <div id="in-progress-cards"></div>
+              <div id="in-progress-cards" class="task-card-lane-gap"></div>
             </div>
           </div>
         </div>
@@ -113,7 +173,7 @@
             </div>
             <!-- Lane Cards -->
             <div id="done-cards-box" class="card-body bg-light">
-              <div id="done-cards"></div>
+              <div id="done-cards" class="task-card-lane-gap"></div>
             </div>
           </div>
         </div>
@@ -121,11 +181,11 @@
     </div>
 
     <!-- Bootstrap -->
-    <!-- <script
+    <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
-    ></script> -->
+    ></script>
 
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -147,4 +207,6 @@
 <!-- https://nesin.io/blog/generate-unique-id-javascript -->
 <!-- https://jqueryui.com/draggable/#default -->
 <!-- https://jqueryui.com/draggable/#visual-feedback -->
-<!-- https://jqueryui.com/dialog/#modal-form -->
+<!-- https://getbootstrap.com/docs/5.3/components/modal/#live-demo -->
+<!-- https://getbootstrap.com/docs/5.3/components/buttons/ -->
+<!-- https://getbootstrap.com/docs/5.3/components/card/#about -->
