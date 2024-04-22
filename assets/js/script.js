@@ -1,5 +1,6 @@
 // UI elements
-const addTaskButton = $("#add-task-button");
+const createTaskButton = $("#create-task-button");
+const taskForm = $("#task-form");
 // Form fields
 const newTaskTitle = $("#task-title");
 const newTaskDueDate = $("#task-due-date");
@@ -16,28 +17,7 @@ const doneCardsLaneBox = $("#done-cards-box");
 // Retrieve tasks and nextId from localStorage
 let taskList = [];
 
-// Modal form
-modal = $("#task-form").dialog({
-  autoOpen: false,
-  height: 400,
-  width: 350,
-  modal: true,
-  buttons: {
-    "Create task": createTask,
-    Cancel: function () {
-      // Modal form fields are reset
-      resetForm();
-      //  Modal form window is closed
-      modal.dialog("close");
-    },
-  },
-  close: function () {
-    // Modal form fields are reset
-    resetForm();
-  },
-});
-
-function createTask() {
+function handleCreate() {
   // New task is created
   const newTask = {
     id: crypto.randomUUID(),
@@ -63,7 +43,7 @@ function createTask() {
   resetForm();
 
   //  Modal form window is closed
-  modal.dialog("close");
+  taskForm.modal("hide");
 }
 
 function resetForm() {
@@ -84,6 +64,7 @@ function loadTasks() {
 }
 
 function saveTasks() {
+  // Saves the task list array to local storage
   localStorage.setItem("tasks", JSON.stringify(taskList));
 }
 
@@ -162,13 +143,6 @@ function render(cardArray, cardLane) {
   }
 }
 
-function handleAddTask(event) {
-  event.preventDefault();
-
-  // Modal form window is opened
-  modal.dialog("open");
-}
-
 function handleDelete(id) {
   // Removes the task with the given id from the task list
   taskList = taskList.filter((task) => task.id !== id);
@@ -213,6 +187,8 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+  createTaskButton.on("click", handleCreate);
+
   // Card lane containers are made droppable
   toDoCardsLaneBox.droppable({
     drop: handleDrop,
@@ -229,5 +205,4 @@ $(document).ready(function () {
 
   // Card lanes are rendered
   renderCardLanes();
-  addTaskButton.on("click", handleAddTask);
 });
