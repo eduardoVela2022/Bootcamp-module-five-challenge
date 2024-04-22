@@ -135,10 +135,16 @@ function render(cardArray, cardLane) {
     const newCardDescription = $("<p>");
     newCardDescription.text(card.description);
 
+    // Card's delete button
+    const newDeleteButton = $("<button>");
+    newDeleteButton.text("Delete");
+    newDeleteButton.on("click", () => handleDelete(card.id));
+
     // Card's elements are appened to it
     newCard.append(newCardTitle);
     newCard.append(newCardDueDate);
     newCard.append(newCardDescription);
+    newCard.append(newDeleteButton);
 
     // Card is appended to the given card lane
     cardLane.append(newCard);
@@ -150,6 +156,16 @@ function handleAddTask(event) {
 
   // Modal form window is opened
   modal.dialog("open");
+}
+
+function handleDelete(id) {
+  // Removes the task with the given id from the task list
+  taskList = taskList.filter((task) => task.id !== id);
+
+  // The task board is refreshed
+  saveTasks();
+  loadTasks();
+  renderCardLanes();
 }
 
 function handleDrop(event, ui) {
