@@ -1,5 +1,10 @@
-// UI elements
+// Current Date
+const currentDate = dayjs().format("YYYY-MM-DD");
+const warningDate = dayjs().add(2, "day").format("YYYY-MM-DD");
+
+// Create task button
 const createTaskButton = $("#create-task-button");
+// Task form
 const taskForm = $("#task-form");
 // Form fields
 const newTaskTitle = $("#task-title");
@@ -100,7 +105,26 @@ function render(cardArray, cardLane) {
     const newCard = $("<div>").draggable({ opacity: 0.7, helper: "clone" });
     // It is given the id of the card
     newCard.attr("id", card.id);
-    newCard.attr("class", "card");
+
+    // Card's warning style is applied when the task's due date is 2 days ahead or less from the current date
+    // And if the card's status is not equal to "Done"
+    if (
+      warningDate >= card.dueDate &&
+      currentDate <= card.dueDate &&
+      card.status !== "Done"
+    ) {
+      newCard.attr("class", "card bg-warning");
+    }
+    // Card's danger style is applied when the due date is past the current date
+    // And if the card's status is not equal to "Done"
+    else if (currentDate > card.dueDate && card.status !== "Done") {
+      newCard.attr("class", "card bg-danger text-light");
+    }
+    // Card's normal style is applied when the due date is 3 days ahead or more from the current date
+    else {
+      newCard.attr("class", "card");
+    }
+
     // It is given a z index, so that it is not covered by other elements
     newCard.css("z-index", "1");
 
@@ -125,7 +149,7 @@ function render(cardArray, cardLane) {
 
     // Card's delete button
     const newDeleteButton = $("<button>");
-    newDeleteButton.attr("class", "btn btn-danger");
+    newDeleteButton.attr("class", "btn btn-dark");
     newDeleteButton.text("Delete");
     newDeleteButton.on("click", () => handleDelete(card.id));
 
