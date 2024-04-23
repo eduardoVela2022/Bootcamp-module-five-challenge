@@ -91,18 +91,26 @@
                   type="text"
                   name="task-title"
                   id="task-title"
-                  class="form-control mb-3"
+                  class="form-control"
                 />
+                <div id="task-title-required" class="text-danger">
+                  Please enter a valid title
+                </div>
                 <!-- Due Date -->
-                <label for="task-due-date" class="form-label">Due date:</label>
+                <label for="task-due-date" class="form-label mt-3"
+                  >Due date:</label
+                >
                 <input
                   type="date"
                   name="task-due-date"
                   id="task-due-date"
-                  class="form-control mb-3"
+                  class="form-control"
                 />
+                <div id="task-due-date-required" class="text-danger">
+                  Please enter a valid date
+                </div>
                 <!-- Description -->
-                <label for="task-description" class="form-label"
+                <label for="task-description" class="form-label mt-3"
                   >Description:</label
                 >
                 <textarea
@@ -110,6 +118,9 @@
                   id="task-description"
                   class="form-control"
                 ></textarea>
+                <div id="task-description-required" class="text-danger">
+                  Please enter a valid description
+                </div>
               </form>
             </div>
             <!-- Modal Footer -->

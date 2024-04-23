@@ -2,14 +2,22 @@
 const currentDate = dayjs().format("YYYY-MM-DD");
 const warningDate = dayjs().add(2, "day").format("YYYY-MM-DD");
 
+// Add task button
+const addTaskButton = $("#add-task-button");
 // Create task button
 const createTaskButton = $("#create-task-button");
 // Task form
 const taskForm = $("#task-form");
 // Form fields
 const newTaskTitle = $("#task-title");
+const newTaskTitleRequired = $("#task-title-required");
+
 const newTaskDueDate = $("#task-due-date");
+const newTaskDueDateRequired = $("#task-due-date-required");
+
 const newTaskDescription = $("#task-description");
+const newTaskDescriptionRequired = $("#task-description-required");
+
 // Card lanes
 const toDoCardsLane = $("#todo-cards");
 const inProgressCardsLane = $("#in-progress-cards");
@@ -23,32 +31,58 @@ const doneCardsLaneBox = $("#done-cards-box");
 let taskList = [];
 
 function handleCreate() {
-  // New task is created
-  const newTask = {
-    id: crypto.randomUUID(),
-    title: newTaskTitle.val(),
-    dueDate: newTaskDueDate.val(),
-    description: newTaskDescription.val(),
-    status: "To do",
-  };
+  // Checks that the values of the form's fields are valid
+  if (
+    newTaskTitle.val() === "" ||
+    newTaskDueDate.val() === "" ||
+    newTaskDescription.val() === ""
+  ) {
+    // Displays messages below the fields with invalid values
+    if (newTaskTitle.val() === "") {
+      newTaskTitleRequired.css("display", "block");
+    } else {
+      newTaskTitleRequired.css("display", "none");
+    }
+    if (newTaskDueDate.val() === "") {
+      newTaskDueDateRequired.css("display", "block");
+    } else {
+      newTaskDueDateRequired.css("display", "none");
+    }
+    if (newTaskDescription.val() === "") {
+      newTaskDescriptionRequired.css("display", "block");
+    } else {
+      newTaskDescriptionRequired.css("display", "none");
+    }
+  }
+  // All the values of the form's fields are valid
+  else {
+    // New task is created
+    const newTask = {
+      id: crypto.randomUUID(),
+      title: newTaskTitle.val(),
+      dueDate: newTaskDueDate.val(),
+      description: newTaskDescription.val(),
+      status: "To do",
+    };
 
-  // New task is added to the task list
-  taskList.push(newTask);
+    // New task is added to the task list
+    taskList.push(newTask);
 
-  // Task list is saved to local storage
-  saveTasks();
+    // Task list is saved to local storage
+    saveTasks();
 
-  // Task list is refreshed
-  loadTasks();
+    // Task list is refreshed
+    loadTasks();
 
-  // Card lanes are refreshed
-  renderCardLanes();
+    // Card lanes are refreshed
+    renderCardLanes();
 
-  // Modal form fields are reset
-  resetForm();
+    // Modal form fields are reset
+    resetForm();
 
-  //  Modal form window is closed
-  taskForm.modal("hide");
+    //  Modal form window is closed
+    taskForm.modal("hide");
+  }
 }
 
 function resetForm() {
@@ -209,8 +243,17 @@ function handleDrop(event, ui) {
   renderCardLanes();
 }
 
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
+function handleAdd() {
+  // Hides the messages the form fields display if they are empty when the form is submitted
+  newTaskTitleRequired.css("display", "none");
+  newTaskDueDateRequired.css("display", "none");
+  newTaskDescriptionRequired.css("display", "none");
+}
+
 $(document).ready(function () {
+  // Adds an event listener to the add task button
+  addTaskButton.on("click", handleAdd);
+  // Adds an event listener to the create task button
   createTaskButton.on("click", handleCreate);
 
   // Card lane containers are made droppable

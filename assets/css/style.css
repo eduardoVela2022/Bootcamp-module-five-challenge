@@ -22,3 +22,15 @@ body {
   margin-left: 1rem;
   margin-right: 1rem;
 }
+
+#task-title-required {
+  display: none;
+}
+
+#task-due-date-required {
+  display: none;
+}
+
+#task-description-required {
+  display: none;
+}
